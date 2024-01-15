@@ -10,9 +10,10 @@ class User:
     db = "ensave_schema"
     def __init__(self, data):
         self.id = data['id']
-        self.first_name = data['name']
+        self.name = data['name']
         self.email = data['email']
-        self.last_name = data['state']
+        self.state = data['state']
+        self.username = data['username']
         self.password = data['password']
         self.created_at = data['created_at']
         self.updated_at = data['updated_at']

@@ -22,15 +22,15 @@ def login():
     print("hello")
     print(request.form)
     data = { 
-    "username": request.form["username"] 
+        "username": request.form["username"]
     }
     print("HI")
     user_in_db = User.get_by_username(data)
     if not user_in_db:
-        flash("Invalid Email/Password")
+        flash("Invalid Username")
         return redirect("/")
     if not bcrypt.check_password_hash(user_in_db.password, request.form['password']):
-        flash("Invalid Email/Password")
+        flash("Invalid Password")
         return redirect('/')
     session['user_id'] = user_in_db.id
     return redirect("/home")
@@ -60,7 +60,7 @@ def profile():
     data = {
         "id": session["user_id"]
     }
-    return render_template("profile.html")
+    return render_template("profile.html", user=User.get_by_id(data))
 
 @app.route('/logout')
 def logout():
