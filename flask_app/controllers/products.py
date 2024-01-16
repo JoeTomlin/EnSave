@@ -18,3 +18,19 @@ def product_table():
     }
     products = Product.get_all_products()
     return render_template("home.html", user=User.get_by_id(data), products=products)
+
+@app.route('/add/product', methods=['POST'])
+def add_product():
+    if 'user_id' not in session:
+        return redirect('/logout')
+    if not Product.validate_product(request.form):
+        return redirect('/home')
+    data = {
+        "name": request.form["name"],
+        "cost": request.form["cost"],
+        "quantity": request.form["quantity"],
+        "users_id": session["user_id"]
+    }
+    print("hello")
+    Product.save(data)
+    return redirect('/home')
