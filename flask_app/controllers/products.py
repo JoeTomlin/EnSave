@@ -34,3 +34,25 @@ def add_product():
     print("hello")
     Product.save(data)
     return redirect('/home')
+
+@app.route('/product/update', methods=['POST'])
+def update_product():
+    if not Product.validate_product(request.form):
+        return redirect('/home')
+    data = {
+        "id": request.form['id'],
+        "name": request.form["name"],
+        "cost": request.form["cost"],
+        "quantity": request.form["quantity"],
+        "users_id": session["user_id"]
+    }
+    Product.update_product(data)
+    return redirect('/home')
+
+@app.route('/product/<int:id>/delete')
+def delete_product(id):
+    data = {
+        "id":id
+    }
+    Product.delete_product(data)
+    return redirect('/home')

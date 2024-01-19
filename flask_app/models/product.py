@@ -39,6 +39,20 @@ class Product:
         print(data)
         return connectToMySQL('ensave_schema').query_db(query, data)
     
+    @classmethod
+    def update_product(cls,data):
+        print(data)
+        query = """UPDATE products SET name=%(name)s,cost=%(cost)s,quantity=%(quantity)s WHERE id = %(id)s;"""
+        print(query)
+        return connectToMySQL('ensave_schema').query_db(query,data)
+    
+    @classmethod
+    def delete_product(cls, data):
+        query = "DELETE FROM products WHERE id = %(id)s;"
+        results = connectToMySQL('ensave_schema').query_db(query)
+        print("query")
+        return connectToMySQL('ensave_schema').query_db(query, data)
+    
     @staticmethod
     def validate_product(product):
         is_valid = True
