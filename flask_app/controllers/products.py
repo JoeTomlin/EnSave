@@ -16,7 +16,7 @@ def product_table():
     data = {
         "id": session["user_id"]
     }
-    products = Product.get_all_products()
+    products = Product.get_all_products(data)
     return render_template("home.html", user=User.get_by_id(data), products=products)
 
 @app.route('/add/product', methods=['POST'])
@@ -35,16 +35,11 @@ def add_product():
     Product.save(data)
     return redirect('/home')
 
-@app.route('/product/update', methods=['POST'])
-def update_product():
-    if not Product.validate_product(request.form):
-        return redirect('/home')
+@app.route('/product/<int:id>/update', methods=['POST'])
+def update_product(id):
     data = {
-        "id": request.form['id'],
-        "name": request.form["name"],
-        "cost": request.form["cost"],
-        "quantity": request.form["quantity"],
-        "users_id": session["user_id"]
+        "id":id,
+        "quantity": request.form["quantity"]
     }
     Product.update_product(data)
     return redirect('/home')

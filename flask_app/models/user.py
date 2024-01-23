@@ -50,6 +50,13 @@ class User:
             return False
         return cls(result[0])
     
+    @classmethod
+    def update_user(cls,data):
+        print(data)
+        query = """UPDATE users SET name=%(name)s,email=%(email)s,state=%(state)s,username=%(username)s,password=%(password)s WHERE id = %(id)s;"""
+        print(query)
+        return connectToMySQL('ensave_schema').query_db(query,data)
+    
     @staticmethod
     def validate_user(user):
         is_valid = True

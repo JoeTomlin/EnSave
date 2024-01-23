@@ -62,6 +62,20 @@ def profile():
     }
     return render_template("profile.html", user=User.get_by_id(data))
 
+@app.route('/user/<int:id>/update', methods=['POST'])
+def update_user(id):
+    data = {
+        "id":id,
+        "name": request.form["name"],
+        "email": request.form["email"],
+        "state": request.form["state"],
+        "username": request.form["username"],
+        "password": bcrypt.generate_password_hash(request.form["password"]),
+        "pswd_confirm": bcrypt.generate_password_hash(request.form["pswd_confirm"])
+    }
+    User.update_user(data)
+    return redirect('/profile')
+
 @app.route('/logout')
 def logout():
     session.clear()

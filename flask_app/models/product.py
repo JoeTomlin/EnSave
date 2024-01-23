@@ -18,9 +18,9 @@ class Product:
         self.creator = None
         
     @classmethod
-    def get_all_products(cls):
-        query = "SELECT * FROM products JOIN users ON products.users_id = users.id;"
-        results = connectToMySQL('ensave_schema').query_db(query)
+    def get_all_products(cls, data):
+        query = "SELECT * FROM products JOIN users ON products.users_id = users.id WHERE users_id = %(id)s;"
+        results = connectToMySQL('ensave_schema').query_db(query, data)
         print(results)
         all_products = []
         if results:
@@ -40,17 +40,17 @@ class Product:
         return connectToMySQL('ensave_schema').query_db(query, data)
     
     @classmethod
-    def update_product(cls,data):
+    def update_product(cls, data):
         print(data)
-        query = """UPDATE products SET name=%(name)s,cost=%(cost)s,quantity=%(quantity)s WHERE id = %(id)s;"""
+        query = """UPDATE products SET quantity=%(quantity)s WHERE id = %(id)s;"""
         print(query)
-        return connectToMySQL('ensave_schema').query_db(query,data)
+        return connectToMySQL('ensave_schema').query_db(query, data)
     
     @classmethod
     def delete_product(cls, data):
         query = "DELETE FROM products WHERE id = %(id)s;"
         results = connectToMySQL('ensave_schema').query_db(query)
-        print("query")
+        print(query)
         return connectToMySQL('ensave_schema').query_db(query, data)
     
     @staticmethod
@@ -60,10 +60,10 @@ class Product:
         if len(product['name']) < 3:
             flash("Your product name must be at least 3 characters long.", "product")
             is_valid = False
-        if len(product['cost']) < 1:
+        if int(product['cost']) < 1:
             flash("Your product has to cost something.", "product")
             is_valid = False
-        if len(product['quantity']) < 1:
+        if int(product['quantity']) < 1:
             flash("If you have less than 1 product, you might as well delete it.", "product")
             is_valid = False
         return is_valid
